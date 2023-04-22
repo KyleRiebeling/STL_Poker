@@ -141,7 +141,17 @@ public:
       shuffled.pop();
       return temp;
    }
-
+   
+   void dealHands(Card playersHands[][2], int numPlayers){
+      for (int j = 0; j < numPlayers; j++){
+         cout << endl << "Player " << j+1 << "'s hand." << endl;
+         for (int i = 0; i < 2; i++) {
+            playersHands[j][i] = dealCard();
+            cout << playersHands[j][i].toString() << endl;
+         }
+      }
+   }
+   
    string evaluateHand(Card hand[]) {
 
       int suitsFound[5] = {0, 0, 0, 0, 0};

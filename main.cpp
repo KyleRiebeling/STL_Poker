@@ -71,14 +71,13 @@ int main() {
 
    DeckOfCards myDeckOfCards;
    myDeckOfCards.shuffleDeck(); // place Cards in queue
-   Card playersHand[5];
+   Card playersHands[numPlayers][2];
+   myDeckOfCards.dealHands(playersHands,numPlayers);
+   /*for(int i = 0; i < numPlayers; i++){
+      cout << myDeckOfCards.evaluateHand(playersHand[j]) << endl << endl;
+   }*/
 
-   for (int i = 0; i < 5; i++) {
-      playersHand[i] = myDeckOfCards.dealCard();
-      cout << playersHand[i].toString() << endl;
-   }
-
-   cout << myDeckOfCards.evaluateHand(playersHand);
+   
    return 0;
 }
 
