@@ -11,33 +11,39 @@
 
 using namespace std;
 
-class Card{
+class Card {
 private:
    string face;
    string suit;
 public:
 
-   Card(){
+   Card() {
       face = "Face";
       suit = "Suit";
    }
-   string toString() { 
-      return face + " of " + suit; 
+   
+   Card(string faceS, string suitS) {
+      face = faceS;
+      suit = suitS;
+   }
+   
+   string toString() {
+      return face + " of " + suit;
    }
 
-   string getFace(){
+   string getFace() {
       return face;
    }
 
-   string getSuit(){
+   string getSuit() {
       return suit;
    }
-   
-   void setFace(string f){
+
+   void setFace(string f) {
       face = f;
    }
 
-   void setSuit(string s){
+   void setSuit(string s) {
       suit = s;
    }
 };
