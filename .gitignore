@@ -1,0 +1,12 @@
+
+*.o
+*.inc
+*.d
+*.exe
+*.xml
+*.xml
+*.xml
+*.xml
+*.stackdump
+nbproject/private/private.xml
+nbproject/project.xml
