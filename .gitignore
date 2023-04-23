@@ -10,3 +10,6 @@
 *.stackdump
 nbproject/private/private.xml
 nbproject/project.xml
+.vscode/c_cpp_properties.json
+main
+.vscode/tasks.json
