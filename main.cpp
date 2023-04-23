@@ -4,18 +4,10 @@
 #include <cstdlib>
 
 #include "DeckOfCards.h"
+#include "Table.h"
 
 using namespace std;
 
-void printPlayers(map<string, int> a) {
-   cout << "Player   Bank" << endl;
-   cout << "-------------" << endl;
-   for (auto pair : a) {
-      cout << pair.first << " - $";
-      cout << pair.second << endl;
-   }
-   cout << endl;
-}
 
 int main() {
    srand(time(0));
@@ -36,29 +28,11 @@ int main() {
       cout << "Must be at least one player. Enter a number from 1-3: ";
       cin >> numPlayers;
    }
-   cout << "Enter starting cash for all players: ";
-   cin >> tempN;
-
-   for (int i = 0; i < numPlayers; i++) { //Setting up player maps
-      cout << "Enter player " << i + 1 << "'s name: ";
-      cin >> tempS;
-      players.insert(pair<string, int>(tempS, tempN));
-      if (i == 0) {
-         playerStats.insert(pair<string, list<int>>(tempS, player1Stats));
-         player1Stats.push_back(tempN);
-      }
-      if (i == 1) {
-         playerStats.insert(pair<string, list<int>>(tempS, player2Stats));
-         player2Stats.push_back(tempN);
-      }
-      if (i == 2) {
-         playerStats.insert(pair<string, list<int>>(tempS, player3Stats));
-         player3Stats.push_back(tempN);
-      }
-   }
+   
+   Table pTable = Table(numPlayers);
 
    cout << endl << "Welcome to the table!" << endl;
-   printPlayers(players);
+   pTable.printPlayers();
 
    //-----GAME LOOP-----
 
