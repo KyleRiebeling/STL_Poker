@@ -26,7 +26,7 @@ int main() {
 
    cout << endl << "Welcome to the table!" << endl;
    pTable.printPlayers();
-   cout << "Press Enter to continue...";
+   cout << "Press any key and enter to continue: ";
    char dummy;
    cin >> dummy;
 
