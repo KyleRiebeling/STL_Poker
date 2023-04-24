@@ -3,11 +3,10 @@
 #include <list>
 #include <cstdlib>
 
-#include "DeckOfCards.h"
+
 #include "Table.h"
 
 using namespace std;
-
 
 int main() {
    int numPlayers = 0;
@@ -19,10 +18,10 @@ int main() {
    while (numPlayers <= 0 || numPlayers >= 4 || cin.fail()) {
       cout << "Must be at least one player. Enter a number from 1-3: ";
       cin.clear();
-      cin.ignore(numeric_limits<streamsize>::max(),'\n');
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
       cin >> numPlayers;
    }
-   
+
    Table pTable = Table(numPlayers);
 
    cout << endl << "Welcome to the table!" << endl;
@@ -30,35 +29,33 @@ int main() {
 
    //-----GAME LOOP-----
 
-   //Place Buy-in Bets
+   //Place Buy-in Bets++++
 
-   //Deal cards
+   //Deal cards ++++
 
-   //Ask for more bets
+   //Ask for more bets 2
 
    //Dealer places three cards on table
 
-   //Ask for more bets/folds
+   //Ask for more bets/folds 3
 
    //Dealer places one more card
 
-   //Ask for bets/fold
+   //Ask for bets/fold 4
 
    //Dealer places last card
 
-   //Last round of betting
+   //Last round of betting 5
 
    //Reveal winner and their hand
 
    //Ask if you want to keep going
 
+   for (int i = 0; i < 5; i++) {
+      pTable.placeBets();
+      pTable.startTurn();
+   }
 
-   DeckOfCards myDeckOfCards;
-   myDeckOfCards.shuffleDeck(); // place Cards in queue
-   Card playersHands[numPlayers][2];
-   myDeckOfCards.dealHands(playersHands,numPlayers);//Give each player 2 cards
-
-   
    return 0;
 }
 

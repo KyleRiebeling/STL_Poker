@@ -77,19 +77,15 @@ private:
    }
 
    bool threeOfAKind(int f[]) {
-      for (int i = 0; i < 14; i++) {
-         if (f[i] == 3) {
-            return true;
-         }
+      if (count(f, f + 14, 3)) {
+         return true;
       }
       return false;
    }
 
    bool pair(int f[]) {
-      for (int i = 0; i < 14; i++) {
-         if (f[i] == 2) {
-            return true;
-         }
+      if (count(f, f + 14, 2)) {
+         return true;
       }
       return false;
    }
@@ -109,7 +105,7 @@ private:
 public:
 
    DeckOfCards() {
-      string faces[] = {"Ace", "Deuce", "Three", "Four", "Five", "Six",
+      string faces[] = {"Ace", "Two", "Three", "Four", "Five", "Six",
          "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"};
       string suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
       int i = 0;
@@ -121,10 +117,9 @@ public:
    }
 
    void shuffleDeck() {
-      // next call to method dealCard should start at deck[0] again
+      // resets dealCard counter
       currentCard = 0;
-      unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-      shuffle(deck, deck + 52, default_random_engine(seed));
+      random_shuffle(deck, deck + 52);
 
       for (auto it : deck) {
          shuffled.push(it);
@@ -133,7 +128,7 @@ public:
 
    Card dealCard() {
       Card temp;
-      if (currentCard >= 52){
+      if (currentCard >= 52) {
          shuffleDeck();
       }
       currentCard++;
@@ -141,17 +136,24 @@ public:
       shuffled.pop();
       return temp;
    }
-   
-   void dealHands(Card playersHands[][2], int numPlayers){
-      for (int j = 0; j < numPlayers; j++){
-         cout << endl << "Player " << j+1 << "'s hand." << endl;
-         for (int i = 0; i < 2; i++) {
-            playersHands[j][i] = dealCard();
-            cout << playersHands[j][i].toString() << endl;
-         }
+
+   void dealHand(list<Card> &playerHand, int amount) {
+      for (int i = 0; i < amount; i++) {
+         Card temp = dealCard();
+         playerHand.push_front(temp);
       }
    }
-   
+
+   void viewHand(list<Card> hand) {
+      for (auto it = hand.begin(); it != hand.end(); it++) {
+         cout << it->toString() << endl;
+      }
+      cout << "When done viewing hand, enter any key and then enter to hide it from the next player.";
+      string temp;
+      cin >> temp;
+      system("clear");
+   }
+
    string evaluateHand(Card hand[]) {
 
       int suitsFound[5] = {0, 0, 0, 0, 0};
@@ -172,7 +174,7 @@ public:
 
          if (hand[i].getFace() == "Ace") {
             facesFound[0]++;
-         } else if (hand[i].getFace() == "Deuce") {
+         } else if (hand[i].getFace() == "Two") {
             facesFound[1]++;
          } else if (hand[i].getFace() == "Three") {
             facesFound[2]++;
