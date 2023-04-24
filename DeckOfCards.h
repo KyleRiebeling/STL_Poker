@@ -154,7 +154,7 @@ public:
       system("clear");
    }
 
-   void viewHand(list<Card> hand,list<Card> dealer, int amount) {
+   void viewHand(list<Card> hand,list<Card> dealer) {
       cout << "Your hand: " << endl;
       for (auto it = hand.begin(); it != hand.end(); it++) {
          cout << it->toString() << endl;
@@ -162,7 +162,6 @@ public:
       
       cout << "Cards on the table: " << endl;
       dealerPrint(dealer);
-      
       cout << "When done viewing hand, enter any key and then enter to hide it from the next player.";
       string temp;
       cin >> temp;

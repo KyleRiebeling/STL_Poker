@@ -83,7 +83,7 @@ public:
          cout << "The pot is up to $" << pot << "!" << endl;
       } 
       
-      else if (turn == 2 || turn == 3) {
+      else if (turn >= 2 && turn <= 5) {
          highBet = 0;
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             if (tempC == 'f') {
@@ -176,17 +176,18 @@ public:
             cin >> tempS;
             switch (currPlayer) {
                case 1:
-                  myDeck.viewHand(player1Cards, dealerCards, 3);
+                  myDeck.viewHand(player1Cards, dealerCards);
                   break;
                case 2:
-                  myDeck.viewHand(player2Cards, dealerCards, 3);
+                  myDeck.viewHand(player2Cards, dealerCards);
                   break;
                case 3:
-                  myDeck.viewHand(player3Cards, dealerCards, 3);
+                  myDeck.viewHand(player3Cards, dealerCards);
                   break;
                default:
                   break;
             }
+            currPlayer++;
          }
       }
       
@@ -198,17 +199,41 @@ public:
             cin >> tempS;
             switch (currPlayer) {
                case 1:
-                  myDeck.viewHand(player1Cards, dealerCards, 3);
+                  myDeck.viewHand(player1Cards, dealerCards);
                   break;
                case 2:
-                  myDeck.viewHand(player2Cards, dealerCards, 3);
+                  myDeck.viewHand(player2Cards, dealerCards);
                   break;
                case 3:
-                  myDeck.viewHand(player3Cards, dealerCards, 3);
+                  myDeck.viewHand(player3Cards, dealerCards);
                   break;
                default:
                   break;
             }
+            currPlayer++;
+         }
+      }
+      
+      else if(turn == 4){
+         dealerCards.push_front(myDeck.dealCard()); // Give the dealer 1 more card
+         for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
+            system("clear");
+            cout << it->first << ", press any key and then enter to view your hand with the cards on the table: ";
+            cin >> tempS;
+            switch (currPlayer) {
+               case 1:
+                  myDeck.viewHand(player1Cards, dealerCards);
+                  break;
+               case 2:
+                  myDeck.viewHand(player2Cards, dealerCards);
+                  break;
+               case 3:
+                  myDeck.viewHand(player3Cards, dealerCards);
+                  break;
+               default:
+                  break;
+            }
+            currPlayer++;
          }
       }
 

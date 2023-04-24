@@ -33,17 +33,17 @@ int main() {
 
    //Deal cards ++++
 
-   //Ask for more bets 2
+   //Ask for more bets 2 ++
 
-   //Dealer places three cards on table
+   //Dealer places three cards on table ++
 
-   //Ask for more bets/folds 3
+   //Ask for more bets/folds 3 ++
 
-   //Dealer places one more card
+   //Dealer places one more card ++
 
-   //Ask for bets/fold 4
+   //Ask for bets/fold 4 ++
 
-   //Dealer places last card
+   //Dealer places last card ++
 
    //Last round of betting 5
 
