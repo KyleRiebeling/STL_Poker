@@ -27,7 +27,6 @@ private:
    list<Card> player2Cards;
    list<Card> player3Cards;
    list<Card> dealerCards;
-   int numPlayers;
    int highBet;
    int pot;
    int turn;
@@ -35,7 +34,6 @@ public:
 
    Table(int num_Players) {
       pot = 0;
-      numPlayers = num_Players;
       turn = 1;
       myDeck.shuffleDeck();
 
@@ -51,7 +49,7 @@ public:
          cin >> tempN;
       }
 
-      for (int i = 0; i < numPlayers; i++) { //Setting up player maps
+      for (int i = 0; i < num_Players; i++) { //Setting up player maps
          cout << "Enter player " << i + 1 << "'s name: ";
          cin >> tempS;
          players.insert(pair<string, int>(tempS, tempN));
