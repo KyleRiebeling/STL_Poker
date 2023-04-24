@@ -45,7 +45,7 @@ int main() {
 
    //Dealer places last card ++
 
-   //Last round of betting 5
+   //Last round of betting 5 +++
 
    //Reveal winner and their hand
 

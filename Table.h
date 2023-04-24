@@ -58,6 +58,10 @@ public:
       }
    }
 
+   void setTurn(int t) {
+      turn = t;
+   }
+
    void printPlayers() {
       cout << "Player   Cash" << endl;
       cout << "-------------" << endl;
@@ -81,8 +85,8 @@ public:
             it->second -= currBet;
          }
          cout << "The pot is up to $" << pot << "!" << endl;
-      } 
-      
+      }
+
       else if (turn >= 2 && turn <= 5) {
          highBet = 0;
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
@@ -120,19 +124,15 @@ public:
             }
          }
       }
-
-
-
-
-
    }
 
    void startTurn() {
       string tempS;
       int currPlayer = 1;
-      
-      if (activePlayers.size() == 1 && turn < 10){
+
+      if (activePlayers.size() == 1 && turn < 10) {
          map<string, int>::iterator it = activePlayers.begin();
+         system("clear");
          cout << it->first << " wins!";
          turn = 100;
       }
@@ -150,7 +150,7 @@ public:
          myDeck.dealHand(player1Cards, 2); //Give each player 2 cards
          myDeck.dealHand(player2Cards, 2);
          myDeck.dealHand(player3Cards, 2);
-         
+
 
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             system("clear");
@@ -172,8 +172,8 @@ public:
 
             currPlayer++;
          }
-      } 
-      
+      }
+
       else if (turn == 2) {
          myDeck.dealHand(dealerCards, 3); // Give the dealer 3 cards
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
@@ -196,8 +196,7 @@ public:
             currPlayer++;
          }
       }
-      
-      else if(turn == 3){
+      else if (turn == 3) {
          dealerCards.push_front(myDeck.dealCard()); // Give the dealer 1 more card
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             system("clear");
@@ -219,8 +218,7 @@ public:
             currPlayer++;
          }
       }
-      
-      else if(turn == 4){
+      else if (turn == 4) {
          dealerCards.push_front(myDeck.dealCard()); // Give the dealer 1 more card
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             system("clear");
@@ -241,6 +239,33 @@ public:
             }
             currPlayer++;
          }
+      }
+      else if (turn == 5) {
+         int handVals[4] = {0, 0, 0, 0};
+         for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
+            cout << itr->first << "'s hand result: ";
+            switch (currPlayer) {
+               case 1:
+                  handVals[currPlayer] = myDeck.evaluateHand(player1Cards, dealerCards);
+                  break;
+               case 2:
+                  handVals[currPlayer] = myDeck.evaluateHand(player2Cards, dealerCards);
+                  break;
+               case 3:
+                  handVals[currPlayer] = myDeck.evaluateHand(player3Cards, dealerCards);
+                  break;
+               default:
+                  break;
+            }
+            currPlayer++;
+         }
+         int* winner =  max_element(handVals, handVals+4);
+         *winner++;
+         map<string,int>::iterator it = activePlayers.begin();
+         for (int i = 1; i <= *winner; i++){
+            it++;
+         }
+         cout << it->first << " is the winner!" << endl;
       }
 
       turn++;

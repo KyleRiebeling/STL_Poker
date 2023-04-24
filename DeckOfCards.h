@@ -174,88 +174,114 @@ public:
          cout << it->toString() << endl;
       }
    }
-   string evaluateHand(Card hand[]) {
+   
+   int evaluateHand(list<Card> player, list<Card> dealer) {
 
       int suitsFound[5] = {0, 0, 0, 0, 0};
       int facesFound[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      list<Card> combined;
+      while (!combined.empty()) {
+            combined.pop_back();
+         }
+      combined.splice(combined.begin(), player);
+      combined.splice(combined.begin(), dealer);
 
-      for (int i = 0; i < 5; i++) {
-         if (hand[i].getSuit() == "Hearts") {
+      for (auto itr = combined.begin(); itr != combined.end(); itr++) {
+         if (itr->getSuit() == "Hearts") {
             suitsFound[0]++;
-         } else if (hand[i].getSuit() == "Clubs") {
+         } else if (itr->getSuit() == "Clubs") {
             suitsFound[1]++;
-         } else if (hand[i].getSuit() == "Spades") {
+         } else if (itr->getSuit() == "Spades") {
             suitsFound[2]++;
-         } else if (hand[i].getSuit() == "Diamonds") {
+         } else if (itr->getSuit() == "Diamonds") {
             suitsFound[3]++;
          } else {
             suitsFound[4]++;
          }
 
-         if (hand[i].getFace() == "Ace") {
+         if (itr->getFace() == "Ace") {
             facesFound[0]++;
-         } else if (hand[i].getFace() == "Two") {
+         } else if (itr->getFace() == "Two") {
             facesFound[1]++;
-         } else if (hand[i].getFace() == "Three") {
+         } else if (itr->getFace() == "Three") {
             facesFound[2]++;
-         } else if (hand[i].getFace() == "Four") {
+         } else if (itr->getFace() == "Four") {
             facesFound[3]++;
-         } else if (hand[i].getFace() == "Five") {
+         } else if (itr->getFace() == "Five") {
             facesFound[4]++;
-         } else if (hand[i].getFace() == "Six") {
+         } else if (itr->getFace() == "Six") {
             facesFound[5]++;
-         } else if (hand[i].getFace() == "Seven") {
+         } else if (itr->getFace() == "Seven") {
             facesFound[6]++;
-         } else if (hand[i].getFace() == "Eight") {
+         } else if (itr->getFace() == "Eight") {
             facesFound[7]++;
-         } else if (hand[i].getFace() == "Nine") {
+         } else if (itr->getFace() == "Nine") {
             facesFound[8]++;
-         } else if (hand[i].getFace() == "Ten") {
+         } else if (itr->getFace() == "Ten") {
             facesFound[9]++;
-         } else if (hand[i].getFace() == "Jack") {
+         } else if (itr->getFace() == "Jack") {
             facesFound[10]++;
-         } else if (hand[i].getFace() == "Queen") {
+         } else if (itr->getFace() == "Queen") {
             facesFound[11]++;
-         } else if (hand[i].getFace() == "King") {
+         } else if (itr->getFace() == "King") {
             facesFound[12]++;
          } else {
             facesFound[13]++;
          }
       }
-
+      
+      for (auto i : suitsFound){
+         cout << i << " ";
+      }
+      cout << endl;
+      for (auto i : facesFound){
+         cout << i << " ";
+      }
+      cout << endl;
+      
       if (facesFound[13] != 0 || suitsFound[4] != 0) {
-         return "ERROR";
+         return -1;
       }
 
-      if (fullHouse(facesFound)) {
-         return "Full house!";
+      else if (fourOfAKind(facesFound)) {
+         cout << "Four of a Kind!" << endl;
+         return 7;
+      }
+      
+      else if (fullHouse(facesFound)) {
+         cout << "Full House!" << endl;
+         return 6;
+      }
+      
+      else if (flush(suitsFound)) {
+         cout << "Flush!" << endl;
+         return 5;
+      }
+      
+      else if (straight(facesFound)) {
+         cout << "Straight!" << endl;
+         return 4;
       }
 
-      if (straight(facesFound)) {
-         return "Straight!";
+      else if (threeOfAKind(facesFound)) {
+         cout << "Three of a kind!" << endl;
+         return 3;
       }
 
-      if (flush(suitsFound)) {
-         return "Flush!";
+      else if (twoPairs(facesFound)) {
+         cout << "Two pairs!" << endl;
+         return 2;
       }
 
-      if (fourOfAKind(facesFound)) {
-         return "Four of a kind!";
+      else if (pair(facesFound)) {
+         cout << "One Pair!" << endl;
+         return 1;
       }
-
-      if (threeOfAKind(facesFound)) {
-         return "Three of a kind";
+      
+      else {
+         cout << "Nothing :(" << endl;
+         return 0;
       }
-
-      if (twoPairs(facesFound)) {
-         return "Two pairs";
-      }
-
-      if (pair(facesFound)) {
-         return "One pair";
-      }
-
-      return "Nothing";
    }
 };
 #endif /* DECKOFCARDS_H */
