@@ -122,7 +122,8 @@ public:
                   it->second -= highBet;
                   pot += highBet;
                   raise(currPlay);
-                  cout << "New pot is $" << pot << "!" << endl;
+                  cout << "New pot is $" << pot << "! Press any key and enter to continue: " << endl;
+                  cin >> tempC;
                   return;
             }
          }
@@ -287,6 +288,7 @@ public:
             if (tempC == 'y') {
                if (itr->second >= highBet) {
                   itr->second -= highBet;
+                  pot += highBet;
                } else {
                   cout << "All in!" << endl;
                   pot += itr->second;
