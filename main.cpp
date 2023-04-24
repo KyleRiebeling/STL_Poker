@@ -55,7 +55,7 @@ int main() {
       pTable.placeBets();
       pTable.startTurn();
    }
-
+   
    return 0;
 }
 

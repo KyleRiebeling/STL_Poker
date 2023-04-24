@@ -117,6 +117,7 @@ public:
    }
 
    void shuffleDeck() {
+      srand(time(0));
       // resets dealCard counter
       currentCard = 0;
       random_shuffle(deck, deck + 52);

@@ -130,6 +130,12 @@ public:
    void startTurn() {
       string tempS;
       int currPlayer = 1;
+      
+      if (activePlayers.size() == 1 && turn < 10){
+         map<string, int>::iterator it = activePlayers.begin();
+         cout << it->first << " wins!";
+         turn = 100;
+      }
 
       if (turn == 1) {
          while (!player1Cards.empty()) {
