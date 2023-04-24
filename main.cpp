@@ -11,12 +11,12 @@ using namespace std;
 int main() {
    int numPlayers = 0;
 
-   cout << "Welcome to the casino! How many people will be playing today? (Max of 3)" << endl;
+   cout << "Welcome to the casino! How many people will be playing today? (2 or 3)" << endl;
    cin >> numPlayers;
 
    //Error check for amount of players
    while (numPlayers <= 0 || numPlayers >= 4 || cin.fail()) {
-      cout << "Must be at least one player. Enter a number from 1-3: ";
+      cout << "Enter either 2 or 3: ";
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       cin >> numPlayers;
@@ -26,6 +26,9 @@ int main() {
 
    cout << endl << "Welcome to the table!" << endl;
    pTable.printPlayers();
+   cout << "Press Enter to continue...";
+   char dummy;
+   cin >> dummy;
 
    //-----GAME LOOP-----
 
@@ -55,7 +58,7 @@ int main() {
       pTable.placeBets();
       pTable.startTurn();
    }
-   
+
    return 0;
 }
 

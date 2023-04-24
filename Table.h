@@ -91,6 +91,11 @@ public:
          highBet = 0;
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             if (tempC == 'f') {
+               if (activePlayers.size() == 1){
+                  cout << "Everyone else folded, you win!" << endl;
+                  turn = 100;
+                  return;
+               }
                it = activePlayers.begin();
             }
             tempC = ' ';
