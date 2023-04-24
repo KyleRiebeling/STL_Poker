@@ -81,8 +81,9 @@ public:
             it->second -= currBet;
          }
          cout << "The pot is up to $" << pot << "!" << endl;
-      }
-      else if (turn == 2) {
+      } 
+      
+      else if (turn == 2 || turn == 3) {
          highBet = 0;
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             if (tempC == 'f') {
@@ -104,7 +105,7 @@ public:
                case 'c':
                   break;
                case 'r':
-                  if(it->second <= 0){
+                  if (it->second <= 0) {
                      cout << "Unable to raise, calling instead." << endl;
                      break;
                   }
@@ -112,13 +113,18 @@ public:
                   cout << "Enter amount to raise: ";
                   cin >> highBet;
                   it->second -= highBet;
-                  pot+= highBet;
+                  pot += highBet;
                   raise(currPlay);
                   cout << "New pot is $" << pot << "!" << endl;
                   return;
             }
          }
       }
+
+
+
+
+
    }
 
    void startTurn() {
@@ -138,9 +144,10 @@ public:
          myDeck.dealHand(player1Cards, 2); //Give each player 2 cards
          myDeck.dealHand(player2Cards, 2);
          myDeck.dealHand(player3Cards, 2);
-         myDeck.dealHand(dealerCards, 5); // Give the dealer 3 cards
+         
 
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
+            system("clear");
             cout << it->first << ", press any key and then enter to view your hand: ";
             cin >> tempS;
             switch (currPlayer) {
@@ -159,6 +166,50 @@ public:
 
             currPlayer++;
          }
+      } 
+      
+      else if (turn == 2) {
+         myDeck.dealHand(dealerCards, 3); // Give the dealer 3 cards
+         for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
+            system("clear");
+            cout << it->first << ", press any key and then enter to view your hand with the cards on the table: ";
+            cin >> tempS;
+            switch (currPlayer) {
+               case 1:
+                  myDeck.viewHand(player1Cards, dealerCards, 3);
+                  break;
+               case 2:
+                  myDeck.viewHand(player2Cards, dealerCards, 3);
+                  break;
+               case 3:
+                  myDeck.viewHand(player3Cards, dealerCards, 3);
+                  break;
+               default:
+                  break;
+            }
+         }
+      }
+      
+      else if(turn == 3){
+         dealerCards.push_front(myDeck.dealCard()); // Give the dealer 1 more card
+         for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
+            system("clear");
+            cout << it->first << ", press any key and then enter to view your hand with the cards on the table: ";
+            cin >> tempS;
+            switch (currPlayer) {
+               case 1:
+                  myDeck.viewHand(player1Cards, dealerCards, 3);
+                  break;
+               case 2:
+                  myDeck.viewHand(player2Cards, dealerCards, 3);
+                  break;
+               case 3:
+                  myDeck.viewHand(player3Cards, dealerCards, 3);
+                  break;
+               default:
+                  break;
+            }
+         }
       }
 
       turn++;
@@ -175,10 +226,9 @@ public:
                cin >> tempC;
             }
             if (tempC == 'y') {
-               if (itr->second >= highBet){
-               itr->second -= highBet;
-               }
-               else {
+               if (itr->second >= highBet) {
+                  itr->second -= highBet;
+               } else {
                   cout << "All in!" << endl;
                   pot += itr->second;
                   itr->second = 0;

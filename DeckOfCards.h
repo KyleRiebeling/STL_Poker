@@ -154,6 +154,26 @@ public:
       system("clear");
    }
 
+   void viewHand(list<Card> hand,list<Card> dealer, int amount) {
+      cout << "Your hand: " << endl;
+      for (auto it = hand.begin(); it != hand.end(); it++) {
+         cout << it->toString() << endl;
+      }
+      
+      cout << "Cards on the table: " << endl;
+      dealerPrint(dealer);
+      
+      cout << "When done viewing hand, enter any key and then enter to hide it from the next player.";
+      string temp;
+      cin >> temp;
+      system("clear");
+   }
+   
+   void dealerPrint(list<Card> d){
+      for (auto it = d.begin(); it != d.end(); it++) {
+         cout << it->toString() << endl;
+      }
+   }
    string evaluateHand(Card hand[]) {
 
       int suitsFound[5] = {0, 0, 0, 0, 0};
