@@ -15,6 +15,7 @@
 #include <chrono>
 #include <iterator>
 #include <algorithm>
+#include <utility>
 
 #include "Card.h"
 
@@ -26,81 +27,118 @@ private:
    queue<Card> shuffled;
    int currentCard = 0;
 
-   bool fullHouse(int f[]) {
-      bool pair3 = false;
-      bool pair2 = false;
+   pair<int, int> checkHand(int faces[], int suits[]) {
+      bool flush = false;
+      bool straight = false;
+      bool three = false;
+      bool pairs = false;
+      int highCard;
+      int highStraight;
+
+
+      //Check for errors
+      if (faces[0] != 0 || suits[0] != 0) {
+         return make_pair(-1, -1);
+      }
+
+      //Check highest card
       for (int i = 0; i < 14; i++) {
-         if (f[i] == 2) {
-            pair2 = true;
-         }
-         if (f[i] == 3) {
-            pair3 = true;
-         }
-         if (pair2 && pair3) {
-            return true;
+         if (faces[i] > 0) {
+            highCard = i;
          }
       }
-      return false;
-   }
 
-   bool straight(int f[]) {
+
+      //Check for flush
+      for (int i = 0; i < 4; i++) {
+         if (suits[i] == 5) {
+            flush = true;
+            break;
+         }
+      }
+
+      //Check for straight
       int counter = 0;
       for (int i = 0; i < 14; i++) {
-         if (f[i] == 1) {
+         if (faces[i] == 1) {
             counter++;
          } else {
             counter = 0;
          }
          if (counter == 5) {
-            return true;
+            highStraight = i;
+            straight = true;
          }
       }
-      return false;
-   }
 
-   bool flush(int s[]) {
-      for (int i = 0; i < 5; i++) {
-         if (s[i] == 5) {
-            return true;
+      //Check for special flushes
+      if (flush && straight) {
+         if (faces[10] == 1 && faces[11] == 1 && faces[12] == 1 && faces[13] == 1 && faces[14] == 1) {
+            cout << "Royal Flush!" << endl;
+            return make_pair(10, 0);
+         } else {
+            cout << "Straight Flush!" << endl;
+            return make_pair(9, 0);
          }
       }
-      return false;
-   }
 
-   bool fourOfAKind(int f[]) {
+      //Check for 4 of a kind
       for (int i = 0; i < 14; i++) {
-         if (f[i] == 4) {
-            return true;
+         if (faces[i] == 4) {
+            cout << "Four of a kind!" << endl;
+            return make_pair(8, i);
          }
       }
-      return false;
-   }
 
-   bool threeOfAKind(int f[]) {
-      if (count(f, f + 14, 3)) {
-         return true;
-      }
-      return false;
-   }
-
-   bool pair(int f[]) {
-      if (count(f, f + 14, 2)) {
-         return true;
-      }
-      return false;
-   }
-
-   bool twoPairs(int f[]) {
-      int pairCount = 0;
-      for (int i = 0; i < 14; i++) {
-         if (f[i] >= 2) {
-            pairCount++;
-         }
-         if (pairCount >= 2) {
-            return true;
+      //Check for full house
+      int highestPair = 0;
+      for (int i = 2; i <= 14; i++) {
+         if (faces[i] == 3) {
+            three = true;
+            highestPair = i;
+         } else if (faces[i] == 2) {
+            pairs = true;
+            highestPair = i;
          }
       }
-      return false;
+      if (three && pairs) {
+         cout << "Full House!" << endl;
+         return make_pair(7, highestPair);
+      }
+
+      if (flush) {
+         cout << "Flush!" << endl;
+         return make_pair(6, highCard);
+      }
+
+      if (straight) {
+         cout << "Straight!" << endl;
+         return make_pair(5, highStraight);
+      }
+
+      if (three) {
+         cout << "Three of a kind!" << endl;
+         return make_pair(4, highestPair);
+      }
+
+      //Check for two pairs
+      int numPairs = 0;
+      for (int i = 0; i <= 14; i++) {
+         if (faces[i] == 2) {
+            numPairs++;
+            highestPair = i;
+         }
+      }
+      if (numPairs == 2) {
+         cout << "Two pairs!" << endl;
+         return make_pair(3, highestPair);
+      }
+      if (numPairs == 1) {
+         cout << "One pair!" << endl;
+         return make_pair(2, highestPair);
+      }
+      cout << "Nothing :(" << endl;
+      return make_pair(1, highCard);
    }
 public:
 
@@ -155,12 +193,12 @@ public:
       system("clear");
    }
 
-   void viewHand(list<Card> hand,list<Card> dealer) {
+   void viewHand(list<Card> hand, list<Card> dealer) {
       cout << "Your hand: " << endl;
       for (auto it = hand.begin(); it != hand.end(); it++) {
          cout << it->toString() << endl;
       }
-      
+
       cout << "Cards on the table: " << endl;
       dealerPrint(dealer);
       cout << "When done viewing hand, enter any key and then enter to hide it from the next player.";
@@ -168,27 +206,29 @@ public:
       cin >> temp;
       system("clear");
    }
-   
-   void dealerPrint(list<Card> d){
+
+   void dealerPrint(list<Card> d) {
       for (auto it = d.begin(); it != d.end(); it++) {
          cout << it->toString() << endl;
       }
    }
-   
-   int evaluateHand(list<Card> player, list<Card> dealer) {
 
-      int suitsFound[5] = {0, 0, 0, 0, 0};
-      int facesFound[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+   pair<int, int> evaluateHand(list<Card> player, list<Card> dealer) {
       list<Card> combined;
       while (!combined.empty()) {
-            combined.pop_back();
-         }
+         combined.pop_back();
+      }
       combined.splice(combined.begin(), player);
       combined.splice(combined.begin(), dealer);
 
+      int suitsFound[5] = {0, 0, 0, 0, 0};
+      int facesFound[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+
+
       for (auto itr = combined.begin(); itr != combined.end(); itr++) {
          if (itr->getSuit() == "Hearts") {
-            suitsFound[0]++;
+            suitsFound[4]++;
          } else if (itr->getSuit() == "Clubs") {
             suitsFound[1]++;
          } else if (itr->getSuit() == "Spades") {
@@ -196,11 +236,11 @@ public:
          } else if (itr->getSuit() == "Diamonds") {
             suitsFound[3]++;
          } else {
-            suitsFound[4]++;
+            suitsFound[0]++;
          }
 
          if (itr->getFace() == "Ace") {
-            facesFound[0]++;
+            facesFound[13]++;
          } else if (itr->getFace() == "Two") {
             facesFound[1]++;
          } else if (itr->getFace() == "Three") {
@@ -226,63 +266,23 @@ public:
          } else if (itr->getFace() == "King") {
             facesFound[12]++;
          } else {
-            facesFound[13]++;
+            facesFound[0]++;
          }
       }
-      
-      for (auto i : suitsFound){
+
+      for (auto i : suitsFound) {
          cout << i << " ";
       }
       cout << endl;
-      for (auto i : facesFound){
+      for (auto i : facesFound) {
          cout << i << " ";
       }
       cout << endl;
-      
-      if (facesFound[13] != 0 || suitsFound[4] != 0) {
-         return -1;
-      }
 
-      else if (fourOfAKind(facesFound)) {
-         cout << "Four of a Kind!" << endl;
-         return 7;
-      }
-      
-      else if (fullHouse(facesFound)) {
-         cout << "Full House!" << endl;
-         return 6;
-      }
-      
-      else if (flush(suitsFound)) {
-         cout << "Flush!" << endl;
-         return 5;
-      }
-      
-      else if (straight(facesFound)) {
-         cout << "Straight!" << endl;
-         return 4;
-      }
+      return checkHand(facesFound, suitsFound);
 
-      else if (threeOfAKind(facesFound)) {
-         cout << "Three of a kind!" << endl;
-         return 3;
-      }
-
-      else if (twoPairs(facesFound)) {
-         cout << "Two pairs!" << endl;
-         return 2;
-      }
-
-      else if (pair(facesFound)) {
-         cout << "One Pair!" << endl;
-         return 1;
-      }
-      
-      else {
-         cout << "Nothing :(" << endl;
-         return 0;
-      }
    }
+
 };
 #endif /* DECKOFCARDS_H */
 

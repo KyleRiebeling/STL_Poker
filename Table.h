@@ -83,8 +83,7 @@ public:
             it->second -= currBet;
          }
          cout << "The pot is up to $" << pot << "!" << endl;
-      }
-      else if (turn >= 2 && turn <= 5) {
+      } else if (turn >= 2 && turn <= 5) {
          highBet = 0;
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             if (tempC == 'f') {
@@ -122,8 +121,7 @@ public:
                   if (it->second >= highBet) {
                      it->second -= highBet;
                      pot += highBet;
-                  }
-                  else{
+                  } else {
                      cout << "All in!" << endl;
                      highBet = it->second;
                      it->second = 0;
@@ -184,8 +182,7 @@ public:
 
             currPlayer++;
          }
-      }
-      else if (turn == 2) {
+      } else if (turn == 2) {
          myDeck.dealHand(dealerCards, 3); // Give the dealer 3 cards
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             system("clear");
@@ -249,36 +246,35 @@ public:
             currPlayer++;
          }
       } else if (turn == 5) {
-         int handVals[4] = {0, 0, 0, 0};
+         pair<int, int> p1(0, 0);
+         pair<int, int> p2(0, 0);
+         pair<int, int> p3(0, 0);
          for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
             cout << itr->first << "'s hand result: ";
             switch (currPlayer) {
                case 1:
-                  handVals[currPlayer] = myDeck.evaluateHand(player1Cards, dealerCards);
+                  p1 = myDeck.evaluateHand(player1Cards, dealerCards);
                   break;
                case 2:
-                  handVals[currPlayer] = myDeck.evaluateHand(player2Cards, dealerCards);
+                  p2 = myDeck.evaluateHand(player2Cards, dealerCards);
                   break;
                case 3:
-                  handVals[currPlayer] = myDeck.evaluateHand(player3Cards, dealerCards);
+                  p3 = myDeck.evaluateHand(player3Cards, dealerCards);
                   break;
                default:
                   break;
             }
             currPlayer++;
          }
-         int* winner = max_element(handVals, handVals + 4);
-         *winner++;
-         map<string, int>::iterator it = activePlayers.begin();
-         for (int i = 1; i <= *winner; i++) {
-            it++;
-         }
-         cout << it->first << " is the winner!" << endl;
+         declareWinner(p1, p2, p3);
       }
 
       turn++;
    }
 
+   void declareWinner(pair<int,int> p1,pair<int,int> p2,pair<int,int> p3){
+      
+   }
    void raise(string raiser) {
       char tempC = ' ';
       for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
@@ -303,7 +299,7 @@ public:
                players[itr->first] = itr->second;
                cout << itr->first << " is out of the game!" << endl;
                activePlayers.erase(itr->first);
-               if (activePlayers.size() == 1){
+               if (activePlayers.size() == 1) {
                   return;
                }
             }\
