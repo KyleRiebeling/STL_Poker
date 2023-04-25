@@ -146,6 +146,8 @@ public:
 
       if (activePlayers.size() == 1 && turn < 10) {
          cout << "Everyone else folded, ";
+         map<string,int>::iterator it = activePlayers.begin();
+         players[it->first] = it->second;
          declareWinner(1);
          return;
       }
@@ -159,6 +161,9 @@ public:
          }
          while (!player3Cards.empty()) {
             player3Cards.pop_back();
+         }
+         while (!dealerCards.empty()) {
+            dealerCards.pop_back();
          }
          myDeck.dealHand(player1Cards, 2); //Give each player 2 cards
          myDeck.dealHand(player2Cards, 2);
@@ -325,7 +330,10 @@ public:
 
    void raise(string raiser) {
       char tempC = ' ';
+      int timesAsked = 0;
+      
       for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
+         timesAsked++;
          if (itr->first != raiser) {
             while (tempC != 'y' && tempC != 'n') {
                cout << itr->first << ", would you like to match the raise of " << highBet << "? 'y' or 'n': ";
@@ -347,7 +355,7 @@ public:
                players[itr->first] = itr->second;
                cout << itr->first << " is out of the game!" << endl;
                activePlayers.erase(itr->first);
-               if (activePlayers.size() == 1) {
+               if (activePlayers.size() == 1 || activePlayers.size() <= timesAsked) {
                   return;
                }
             }\
