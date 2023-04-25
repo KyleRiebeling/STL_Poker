@@ -84,12 +84,11 @@ public:
          }
          cout << "The pot is up to $" << pot << "!" << endl;
       }
-
       else if (turn >= 2 && turn <= 5) {
          highBet = 0;
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             if (tempC == 'f') {
-               if (activePlayers.size() == 1){
+               if (activePlayers.size() == 1) {
                   cout << "Everyone else folded, you win!" << endl;
                   turn = 100;
                   return;
@@ -113,14 +112,23 @@ public:
                   break;
                case 'r':
                   if (it->second <= 0) {
-                     cout << "Unable to raise, calling instead." << endl;
+                     cout << "Unable to raise, calling instead. Press any key and enter to continue.";
+                     cin >> tempC;
                      break;
                   }
                   string currPlay = it->first;
                   cout << "Enter amount to raise: ";
                   cin >> highBet;
-                  it->second -= highBet;
-                  pot += highBet;
+                  if (it->second >= highBet) {
+                     it->second -= highBet;
+                     pot += highBet;
+                  }
+                  else{
+                     cout << "All in!" << endl;
+                     highBet = it->second;
+                     it->second = 0;
+                     pot += highBet;
+                  }
                   raise(currPlay);
                   cout << "New pot is $" << pot << "! Press any key and enter to continue: " << endl;
                   cin >> tempC;
@@ -177,7 +185,6 @@ public:
             currPlayer++;
          }
       }
-
       else if (turn == 2) {
          myDeck.dealHand(dealerCards, 3); // Give the dealer 3 cards
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
@@ -199,8 +206,7 @@ public:
             }
             currPlayer++;
          }
-      }
-      else if (turn == 3) {
+      } else if (turn == 3) {
          dealerCards.push_front(myDeck.dealCard()); // Give the dealer 1 more card
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             system("clear");
@@ -221,8 +227,7 @@ public:
             }
             currPlayer++;
          }
-      }
-      else if (turn == 4) {
+      } else if (turn == 4) {
          dealerCards.push_front(myDeck.dealCard()); // Give the dealer 1 more card
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             system("clear");
@@ -243,8 +248,7 @@ public:
             }
             currPlayer++;
          }
-      }
-      else if (turn == 5) {
+      } else if (turn == 5) {
          int handVals[4] = {0, 0, 0, 0};
          for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
             cout << itr->first << "'s hand result: ";
@@ -263,10 +267,10 @@ public:
             }
             currPlayer++;
          }
-         int* winner =  max_element(handVals, handVals+4);
+         int* winner = max_element(handVals, handVals + 4);
          *winner++;
-         map<string,int>::iterator it = activePlayers.begin();
-         for (int i = 1; i <= *winner; i++){
+         map<string, int>::iterator it = activePlayers.begin();
+         for (int i = 1; i <= *winner; i++) {
             it++;
          }
          cout << it->first << " is the winner!" << endl;
@@ -276,7 +280,7 @@ public:
    }
 
    void raise(string raiser) {
-      char tempC;
+      char tempC = ' ';
       for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
          if (itr->first != raiser) {
             while (tempC != 'y' && tempC != 'n') {
@@ -299,6 +303,9 @@ public:
                players[itr->first] = itr->second;
                cout << itr->first << " is out of the game!" << endl;
                activePlayers.erase(itr->first);
+               if (activePlayers.size() == 1){
+                  return;
+               }
             }\
             tempC = ' ';
          }
