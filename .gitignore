@@ -3,13 +3,7 @@
 *.inc
 *.d
 *.exe
-*.xml
-*.xml
-*.xml
-*.xml
 *.stackdump
-nbproject/private/private.xml
-nbproject/project.xml
 .vscode/c_cpp_properties.json
 main
 .vscode/tasks.json

@@ -258,7 +258,7 @@ public:
          pair<int, int> p2(0, 0);
          pair<int, int> p3(0, 0);
          for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
-            cout << itr->first << "'s hand result: ";
+            cout << endl << itr->first << "'s hand result: ";
             players[itr->first] = itr->second;
             switch (currPlayer) {
                case 1:
