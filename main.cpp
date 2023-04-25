@@ -10,6 +10,7 @@ using namespace std;
 
 int main() {
    int numPlayers = 0;
+   char tempC;
 
    cout << "Welcome to the casino! How many people will be playing today? (2 or 3)" << endl;
    cin >> numPlayers;
@@ -26,9 +27,7 @@ int main() {
 
    cout << endl << "Welcome to the table!" << endl;
    pTable.printPlayers();
-   cout << "Press any key and enter to continue: ";
-   char dummy;
-   cin >> dummy;
+
 
    //-----GAME LOOP-----
 
@@ -53,12 +52,16 @@ int main() {
    //Reveal winner and their hand
 
    //Ask if you want to keep going
-
-   for (int i = 0; i < 5; i++) {
-      pTable.placeBets();
-      pTable.startTurn();
+   while (tempC != 'q') {
+      pTable.setTurn(1);
+      for (int i = 0; i < 5; i++) {
+         pTable.placeBets();
+         pTable.startTurn();
+      }
+      system("clear");
+      cout << "Would you like to keep playing? Press 'q' to quit or anything else to play again: ";
+      cin >> tempC;
    }
-
    return 0;
 }
 

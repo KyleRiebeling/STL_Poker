@@ -270,15 +270,6 @@ public:
          }
       }
 
-      for (auto i : suitsFound) {
-         cout << i << " ";
-      }
-      cout << endl;
-      for (auto i : facesFound) {
-         cout << i << " ";
-      }
-      cout << endl;
-
       return checkHand(facesFound, suitsFound);
 
    }

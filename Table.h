@@ -68,6 +68,9 @@ public:
          cout << pair.second << endl;
       }
       cout << endl;
+      cout << "Press any key and enter to continue: ";
+      char dummy;
+      cin >> dummy;
    }
 
    void placeBets() {
@@ -77,6 +80,7 @@ public:
       if (turn == 1) {
          currBet = 5;
          cout << "Everyone places the buy-in bet of $5." << endl;
+         activePlayers.clear();
          activePlayers = players;
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             pot += currBet;
@@ -88,8 +92,8 @@ public:
          for (auto it = activePlayers.begin(); it != activePlayers.end(); it++) {
             if (tempC == 'f') {
                if (activePlayers.size() == 1) {
-                  cout << "Everyone else folded, you win!" << endl;
-                  turn = 100;
+                  cout << "Everyone else folded, ";
+                  declareWinner(1);
                   return;
                }
                it = activePlayers.begin();
@@ -141,10 +145,9 @@ public:
       int currPlayer = 1;
 
       if (activePlayers.size() == 1 && turn < 10) {
-         map<string, int>::iterator it = activePlayers.begin();
-         system("clear");
-         cout << it->first << " wins!";
-         turn = 100;
+         cout << "Everyone else folded, ";
+         declareWinner(1);
+         return;
       }
 
       if (turn == 1) {
@@ -251,6 +254,7 @@ public:
          pair<int, int> p3(0, 0);
          for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
             cout << itr->first << "'s hand result: ";
+            players[itr->first] = itr->second;
             switch (currPlayer) {
                case 1:
                   p1 = myDeck.evaluateHand(player1Cards, dealerCards);
@@ -266,15 +270,59 @@ public:
             }
             currPlayer++;
          }
-         declareWinner(p1, p2, p3);
+         int winner = findWinner(p1, p2, p3);
+         declareWinner(winner);
+
       }
 
       turn++;
    }
 
-   void declareWinner(pair<int,int> p1,pair<int,int> p2,pair<int,int> p3){
-      
+   int findWinner(pair<int, int> p1, pair<int, int> p2, pair<int, int> p3) {
+      pair<int, int> largest = p1;
+      if (p2.first > largest.first || (p2.first == largest.first && p2.second > largest.second)) {
+         largest = p2;
+      }
+      if (p3.first > largest.first || (p3.first == largest.first && p3.second > largest.second)) {
+         largest = p3;
+      }
+
+      if (largest.first == p1.first && largest.second == p1.second) {
+         return 1;
+      }
+      if (largest.first == p2.first && largest.second == p2.second) {
+         return 2;
+      }
+      if (largest.first == p3.first && largest.second == p3.second) {
+         return 3;
+      }
+      return 1;
    }
+
+   void declareWinner(int player) {
+      map<string, int>::iterator it;
+      it = activePlayers.begin();
+      for (int i = 1; i < player; i++) {
+         it++;
+      }
+
+      cout << it->first << " Wins!" << endl;
+
+      addEarnings(it->first);
+   }
+
+   void addEarnings(string winner) {
+      map<string, int>::iterator itr = players.begin();
+      while (itr->first != winner) {
+         itr++;
+      }
+
+      turn = 100;
+      itr->second += pot;
+      pot = 0;
+      printPlayers();
+   }
+
    void raise(string raiser) {
       char tempC = ' ';
       for (auto itr = activePlayers.begin(); itr != activePlayers.end(); itr++) {
